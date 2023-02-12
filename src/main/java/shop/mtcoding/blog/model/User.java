@@ -1,4 +1,3 @@
-
 package shop.mtcoding.blog.model;
 
 import java.sql.Timestamp;

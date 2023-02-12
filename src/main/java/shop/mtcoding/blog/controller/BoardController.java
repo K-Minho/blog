@@ -35,6 +35,9 @@ public class BoardController {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    private BoardRepository boardRepository;
+
 
     @DeleteMapping("/board/{id}")
     public @ResponseBody ResponseEntity<?> delete(@PathVariable int id){
@@ -45,9 +48,6 @@ public class BoardController {
         boardService.delete(id, principal.getId());
         return new ResponseEntity<>(new ResponseDto<>(1, "삭제성공", null), HttpStatus.OK);
     }
-
-    @Autowired
-    private BoardRepository boardRepository;
 
     @GetMapping("/board/{id}/updateForm")
     public String updateForm(@PathVariable int id, Model model) {

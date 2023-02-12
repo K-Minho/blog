@@ -9,9 +9,9 @@ import org.apache.ibatis.annotations.Param;
 public interface UserRepository {
       public List<User> findAllUser();
 
-      public User findUserById(int id);
+      public User findByUsername(@Param("username") String username);
 
-      public User findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+      public User findUserById(int id);
 
       public int insertUser(@Param("username") String username, @Param("password") String password,
                   @Param("email") String email);
@@ -19,6 +19,8 @@ public interface UserRepository {
       public int updateUserById(@Param("id") int id, @Param("username") String username,
                   @Param("password") String password,
                   @Param("email") String email);
+
+      public User findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 
       public int deleteUserById(int id);
 }

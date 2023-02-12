@@ -20,10 +20,10 @@ import shop.mtcoding.blog.model.User;
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 public class UserControllerTest {
-
+    
     @Autowired
     private MockMvc mvc;
-
+    
     @Test
     public void login_test() throws Exception {
         // given
@@ -40,6 +40,20 @@ public class UserControllerTest {
         assertThat(principal.getUsername()).isEqualTo("ssar");
         resultActions.andExpect(status().is3xxRedirection());
     }
+    
+    @Test
+    public void join_test() throws Exception {
+        // given
+        String requestBody = "username=Keter&password=1234&email=Keter@nate.com";
+
+        // when
+        ResultActions resultActions = mvc.perform(post("/join").content(requestBody)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+
+        // then
+        resultActions.andExpect(status().is3xxRedirection());
+    }
+
 
 
 }

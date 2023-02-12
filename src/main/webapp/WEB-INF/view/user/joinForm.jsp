@@ -12,13 +12,6 @@
         select * from user_tb where id = #{id}
     </select>
 
-    <select id="findByUsernameAndPassword" resultType="shop.mtcoding.blog.model.User">
-        select * from user_tb where username = #{username} and password = #{password}
-    
-    <select id="findByUsername" resultType="shop.mtcoding.blog.model.User">
-        select * from user_tb where username = #{username}
-    </select> 
-
     <insert id="insertUser">
         insert into user_tb (username, password, email, created_at) values(#{username}, #{password}, #{email}, now())
     </insert>    
