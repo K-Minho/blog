@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import shop.mtcoding.blog.dto.board.BoardResp;
+import shop.mtcoding.blog.dto.board.BoardResp.BoardDetailRespDto;
 
 @Transactional
 @AutoConfigureMockMvc
@@ -30,6 +31,7 @@ public class BoardControllerTest {
 
     @Autowired
     private ObjectMapper om;
+
 
     @Test
     public void main_test() throws Exception {
@@ -49,5 +51,22 @@ public class BoardControllerTest {
         assertThat(dtos.get(0).getUsername()).isEqualTo("ssar");
         assertThat(dtos.get(0).getTitle()).isEqualTo("제목1");
     }
+    
+    @Test
+    public void detail_test() throws Exception {
+        // given
+        int id = 1;
 
+        // when
+        ResultActions resultActions = mvc.perform(
+                get("/board/" + id));
+        Map<String, Object> map = resultActions.andReturn().getModelAndView().getModel();
+        BoardDetailRespDto boardDto = (BoardDetailRespDto) map.get("boardDto");
+
+        // then
+        resultActions.andExpect(status().isOk());
+        assertThat(boardDto.getUsername()).isEqualTo("ssar");
+        assertThat(boardDto.getUserId()).isEqualTo(1);
+        assertThat(boardDto.getTitle()).isEqualTo("제목1");
+    }
 }
