@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,14 +30,24 @@ import shop.mtcoding.blog.service.BoardService;
 public class BoardController {
 
     @Autowired
-    private BoardRepository boardRepository;
-
-    @Autowired
     private BoardService boardService;
-
+    
     @Autowired
     private HttpSession session;
 
+
+    @DeleteMapping("/board/{id}")
+    public @ResponseBody ResponseEntity<?> delete(@PathVariable int id){
+        User principal = (User) session.getAttribute("principal");
+        if (principal == null) {
+            throw new CustomApiException("인증이 되지 않았습니다", HttpStatus.UNAUTHORIZED);
+        }
+        boardService.delete(id, principal.getId());
+        return new ResponseEntity<>(new ResponseDto<>(1, "삭제성공", null), HttpStatus.OK);
+    }
+
+    @Autowired
+    private BoardRepository boardRepository;
 
     @GetMapping("/board/{id}/updateForm")
     public String updateForm(@PathVariable int id, Model model) {

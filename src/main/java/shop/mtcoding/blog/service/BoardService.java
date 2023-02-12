@@ -16,6 +16,22 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+    
+    @Transactional
+    public void delete(int id, int userId) {
+        Board boardPS = boardRepository.findById(id);
+        if(boardPS == null){
+            throw new CustomApiException("Board Not Found");
+        }
+        if(boardPS.getUserId() != userId){
+            throw new CustomApiException("You Have No permission", HttpStatus.FORBIDDEN);
+        }
+        try {
+            boardRepository.deleteById(id);
+        }catch (Exception e){
+            throw new CustomApiException("Fail to Delete", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @Transactional
     public void update(int id, BoardUpdateReqDto boardUpdateReqDto, int principalId) {

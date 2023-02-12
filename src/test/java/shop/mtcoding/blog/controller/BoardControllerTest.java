@@ -1,9 +1,10 @@
 package shop.mtcoding.blog.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,9 +41,6 @@ public class BoardControllerTest {
     @Autowired
     private MockMvc mvc;
     
-    @Autowired
-    private ObjectMapper om;
-    
     private MockHttpSession session;
 
     @BeforeEach
@@ -56,6 +54,25 @@ public class BoardControllerTest {
         session = new MockHttpSession();
         session.setAttribute("principal", user);
     }
+    
+    @Test
+    public void delete_test() throws Exception {
+        // given
+        int id = 1;
+
+        // when
+        ResultActions resultActions = mvc.perform(
+                delete("/board/" + id).session(session));
+        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+        System.out.println("delete_test : "+responseBody);
+
+        // then
+        resultActions.andExpect(jsonPath("$.code").value(1));
+        resultActions.andExpect(status().is2xxSuccessful());
+    }
+
+    @Autowired
+    private ObjectMapper om;
 
     @Test
     public void update_test() throws Exception {
